@@ -1,0 +1,68 @@
+<div class="mobile-backdrop" (click)="closeMobileMenu()"></div>
+<aside class="sidebar" [class.sidebar--collapsed]="isCollapsed()">
+
+  <!-- Brand -->
+  <div class="sidebar-brand">
+    <div class="brand-icon">
+      <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+        <path d="M16 2L4 7V15C4 22.18 9.18 28.74 16 30C22.82 28.74 28 22.18 28 15V7L16 2Z" fill="url(#sidebarGrad)"/>
+        <path d="M13 16H11V21H21V16H19V14C19 12.34 17.66 11 16 11C14.34 11 13 12.34 13 14V16ZM16 13C16.55 13 17 13.45 17 14V16H15V14C15 13.45 15.45 13 16 13Z" fill="white"/>
+        <defs>
+          <linearGradient id="sidebarGrad" x1="4" y1="2" x2="28" y2="30" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#6366f1"/>
+            <stop offset="100%" stop-color="#8b5cf6"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <span class="brand-name">RBAC</span>
+    <button class="collapse-btn" (click)="toggleCollapse()" [attr.aria-label]="isCollapsed() ? 'Expand sidebar' : 'Collapse sidebar'" id="sidebar-toggle-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline *ngIf="!isCollapsed()" points="15 18 9 12 15 6"/>
+        <polyline *ngIf="isCollapsed()"  points="9 18 15 12 9 6"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Nav Label -->
+  <p class="nav-section-label" *ngIf="!isCollapsed()">NAVIGATION</p>
+
+  <!-- Menu Items -->
+  <nav class="sidebar-nav" role="navigation" aria-label="Main navigation">
+    <a
+      *ngFor="let item of menuItems"
+      [routerLink]="item.route"
+      class="nav-item"
+      [class.nav-item--active]="activeMenu() === item.id"
+      (click)="setActive(item.id); closeMobileMenu()"
+      [id]="'nav-' + item.id"
+      [attr.aria-current]="activeMenu() === item.id ? 'page' : null"
+      [attr.title]="isCollapsed() ? item.label : null"
+    >
+      <span class="nav-icon" [innerHTML]="item.icon"></span>
+      <span class="nav-label">{{ item.label }}</span>
+      <span class="nav-badge" *ngIf="item.badge && !isCollapsed()">{{ item.badge }}</span>
+      <span class="active-indicator" *ngIf="activeMenu() === item.id"></span>
+    </a>
+  </nav>
+
+  <!-- Footer -->
+  <div class="sidebar-footer">
+    <div class="user-info" *ngIf="!isCollapsed()">
+      <div class="user-avatar">A</div>
+      <div class="user-details">
+        <p class="user-name">Admin RBAC</p>
+        <p class="user-role">Super Administrator</p>
+      </div>
+    </div>
+    <div class="user-avatar" *ngIf="isCollapsed()" title="Admin RBAC">A</div>
+    <button class="logout-btn" (click)="logout()" title="Sign Out" id="logout-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+        <polyline points="16 17 21 12 16 7"/>
+        <line x1="21" y1="12" x2="9" y2="12"/>
+      </svg>
+    </button>
+  </div>
+
+</aside>

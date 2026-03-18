@@ -1,0 +1,270 @@
+<section class="login-page" role="main">
+
+  <!-- Animated Particle Canvas -->
+  <canvas #canvasEl class="particle-canvas" aria-hidden="true"></canvas>
+
+  <!-- Animated Background Orbs -->
+  <div class="bg-orb bg-orb--1" aria-hidden="true"></div>
+  <div class="bg-orb bg-orb--2" aria-hidden="true"></div>
+  <div class="bg-orb bg-orb--3" aria-hidden="true"></div>
+
+  <!-- Floating geometric shapes -->
+  <div class="geo-shapes" aria-hidden="true">
+    <div class="geo geo--ring geo--1"></div>
+    <div class="geo geo--ring geo--2"></div>
+    <div class="geo geo--dot geo--3"></div>
+    <div class="geo geo--dot geo--4"></div>
+    <div class="geo geo--line geo--5"></div>
+  </div>
+
+  <!-- Login Card -->
+  <div class="login-wrapper">
+    <div class="login-card" [class.card--success]="loginSuccess()">
+
+      <!-- Card Glow Border -->
+      <div class="card-glow" aria-hidden="true"></div>
+
+      <!-- Logo — flat siblings to avoid compound rotation -->
+      <div class="brand-logo">
+        <!-- Outer dashed ring -->
+        <div class="logo-ring logo-ring--outer"></div>
+        <!-- Inner dashed ring -->
+        <div class="logo-ring logo-ring--inner"></div>
+        <!-- Core icon -->
+        <div class="logo-core">
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="RBAC Logo">
+            <path d="M16 2L4 7V15C4 22.18 9.18 28.74 16 30C22.82 28.74 28 22.18 28 15V7L16 2Z"
+                  fill="url(#shieldGrad)" opacity="0.9"/>
+            <path d="M13 16H11V21H21V16H19V14C19 12.34 17.66 11 16 11C14.34 11 13 12.34 13 14V16ZM16 13C16.55 13 17 13.45 17 14V16H15V14C15 13.45 15.45 13 16 13Z"
+                  fill="white" opacity="0.95"/>
+            <defs>
+              <linearGradient id="shieldGrad" x1="4" y1="2" x2="28" y2="30" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#6366f1"/>
+                <stop offset="50%" stop-color="#8b5cf6"/>
+                <stop offset="100%" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <!-- Orbiting dots — use wrapper divs so only the wrapper rotates -->
+        <div class="orbit-arm orbit-arm--1"><div class="orbit-dot orbit-dot--1"></div></div>
+        <div class="orbit-arm orbit-arm--2"><div class="orbit-dot orbit-dot--2"></div></div>
+        <div class="orbit-arm orbit-arm--3"><div class="orbit-dot orbit-dot--3"></div></div>
+      </div>
+
+      <!-- Header Text -->
+      <div class="login-header">
+        <h1 class="login-title">
+          Welcome to <span class="title-gradient">RBAC</span>
+        </h1>
+        <p class="login-subtitle">
+          Your Gateway to Secure Access Management
+        </p>
+      </div>
+
+      <!-- Success State -->
+      <div class="success-overlay" *ngIf="loginSuccess()">
+        <div class="success-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="20" fill="rgba(16, 185, 129, 0.15)"/>
+            <path d="M10 20L17 27L30 13" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="check-path"/>
+          </svg>
+        </div>
+        <p class="success-text">Authentication successful!</p>
+        <p class="success-sub">Redirecting to dashboard...</p>
+      </div>
+
+      <!-- Login Form -->
+      <form
+        [formGroup]="loginForm"
+        (ngSubmit)="onSubmit()"
+        class="login-form"
+        [class.form--hidden]="loginSuccess()"
+        novalidate
+        id="login-form"
+        aria-label="Login form"
+      >
+
+        <!-- Email Field -->
+        <div class="field-group" [class.field-group--error]="emailError" [class.field-group--valid]="emailControl.valid && formSubmitted()">
+          <label class="field-label" for="email-input">
+            <svg class="label-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            Email Address
+          </label>
+          <div class="input-wrapper">
+            <input
+              id="email-input"
+              type="email"
+              class="field-input"
+              formControlName="email"
+              placeholder="your@email.com"
+              autocomplete="email"
+              [class.input--error]="emailError"
+              [class.input--valid]="emailControl.valid && formSubmitted()"
+              aria-describedby="email-error"
+              aria-required="true"
+            />
+            <span class="input-indicator" *ngIf="formSubmitted()">
+              <svg *ngIf="emailControl.valid" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <svg *ngIf="!emailControl.valid" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="15" y1="9" x2="9" y2="15"/>
+                <line x1="9" y1="9" x2="15" y2="15"/>
+              </svg>
+            </span>
+          </div>
+          <span id="email-error" class="field-error" *ngIf="emailError" role="alert">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            {{ emailError }}
+          </span>
+        </div>
+
+        <!-- Password Field -->
+        <div class="field-group" [class.field-group--error]="passwordError">
+          <label class="field-label" for="password-input">
+            <svg class="label-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            Password
+          </label>
+          <div class="input-wrapper">
+            <input
+              id="password-input"
+              [type]="showPassword() ? 'text' : 'password'"
+              class="field-input field-input--password"
+              formControlName="password"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              [class.input--error]="passwordError"
+              aria-describedby="password-error"
+              aria-required="true"
+            />
+            <button
+              type="button"
+              class="toggle-password"
+              (click)="togglePassword()"
+              [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+              id="toggle-password-btn"
+            >
+              <!-- Eye Open -->
+              <svg *ngIf="!showPassword()" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <!-- Eye Closed -->
+              <svg *ngIf="showPassword()" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+            </button>
+          </div>
+          <span id="password-error" class="field-error" *ngIf="passwordError" role="alert">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            {{ passwordError }}
+          </span>
+        </div>
+
+        <!-- Options Row -->
+        <div class="form-options">
+          <label class="checkbox-label" for="remember-me">
+            <input type="checkbox" id="remember-me" class="checkbox-input">
+            <span class="checkbox-custom"></span>
+            <span class="checkbox-text">Remember me</span>
+          </label>
+          <a href="#" class="forgot-link" id="forgot-password-link">Forgot password?</a>
+        </div>
+
+        <!-- Error Alert -->
+        <div class="error-alert" *ngIf="loginError()" role="alert">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          {{ loginError() }}
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="btn-submit"
+          [class.btn-submit--loading]="isLoading()"
+          [disabled]="isLoading()"
+          id="submit-btn"
+        >
+          <span class="btn-content" *ngIf="!isLoading()">
+            Sign In to RBAC
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </span>
+          <span class="btn-loading" *ngIf="isLoading()">
+            <span class="spinner"></span>
+            Authenticating...
+          </span>
+          <span class="btn-shine" aria-hidden="true"></span>
+        </button>
+
+        <!-- Divider -->
+        <div class="form-divider">
+          <span class="divider-text">or continue with</span>
+        </div>
+
+        <!-- SSO Options -->
+        <div class="sso-grid">
+          <button type="button" class="sso-btn" id="sso-microsoft-btn" aria-label="Sign in with Microsoft">
+            <svg width="18" height="18" viewBox="0 0 24 24">
+              <path fill="#f25022" d="M1 1h10v10H1z"/>
+              <path fill="#00a4ef" d="M13 1h10v10H13z"/>
+              <path fill="#7fba00" d="M1 13h10v10H1z"/>
+              <path fill="#ffb900" d="M13 13h10v10H13z"/>
+            </svg>
+            Microsoft
+          </button>
+          <button type="button" class="sso-btn" id="sso-google-btn" aria-label="Sign in with Google">
+            <svg width="18" height="18" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+            Google
+          </button>
+        </div>
+
+      </form>
+
+      <!-- Footer -->
+      <footer class="card-footer">
+        <p class="footer-text">
+          Don't have an account?&nbsp;
+          <a href="#" class="footer-link" id="register-link">Request Access</a>
+        </p>
+        <p class="footer-legal">
+          By signing in, you agree to our
+          <a href="#" class="legal-link" id="terms-link">Terms of Service</a>
+          and
+          <a href="#" class="legal-link" id="privacy-link">Privacy Policy</a>.
+          All access is logged and monitored.
+        </p>
+      </footer>
+
+    </div>
+  </div>
+
+</section>

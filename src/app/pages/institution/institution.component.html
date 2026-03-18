@@ -1,0 +1,209 @@
+<div class="main-container">
+  
+  <!-- Header Section -->
+  <header class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+    <div class="flex-1">
+      <h1 class="page-title text-4xl mb-2">Institutions</h1>
+      <p class="text-dim text-sm font-light">Monitor and manage all banking institution subscriptions across the platform.</p>
+    </div>
+    
+    <div class="flex gap-3">
+      <button class="filter-pill h-11 px-6 bg-white/5 border border-white/10 hover:bg-white/10">
+        Reports <svg class="w-4 h-4 opacity-40 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+      </button>
+      <button class="filter-pill h-11 px-6 bg-white/5 border border-white/10 hover:bg-white/10">
+        Insights <svg class="w-4 h-4 opacity-40 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Metrics Dashboard Section (Responsive labels and track) -->
+  <section class="metrics-section">
+    <div class="metrics-labels hidden md:grid">
+      <span>Inactive</span>
+      <span class="pl-2">Active Institutions</span>
+      <span class="pl-2">Expiring</span>
+      <span class="pl-2">New</span>
+    </div>
+    <div class="metrics-track">
+      <div class="metric-segment seg-inactive w-[12%]">12%</div>
+      <div class="metric-segment seg-active w-[63%]">63% Active</div>
+      <div class="metric-segment seg-expiring w-[15%]">15%</div>
+      <div class="metric-segment seg-new w-[10%]">10%</div>
+    </div>
+    <div class="metrics-labels flex justify-between mt-3 text-[10px] md:hidden">
+       <span>Inactive: 12%</span>
+       <span>Active: 63%</span>
+       <span>New: 10%</span>
+    </div>
+  </section>
+
+  <!-- Data Toolbar -->
+  <nav class="toolbar">
+    <div class="flex gap-2">
+      <button class="filter-pill border-none">Columns <svg class="w-3 h-3 opacity-40 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
+      <button class="filter-pill border-none">Location <svg class="w-3 h-3 opacity-40 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
+      <button class="filter-pill border-none hidden lg:flex">Status <svg class="w-3 h-3 opacity-40 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
+    </div>
+    
+    <div class="search-box">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+      <input type="text" placeholder="Search by name, ID or location...">
+    </div>
+
+    <div class="action-btn-group">
+      <button (click)="openAddModal()" title="Add Institution" class="circle-btn primary-circle">
+        <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
+      </button>
+      <button class="circle-btn">
+        <svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066z"></path></svg>
+      </button>
+      <button class="filter-pill px-5 border-none bg-white/5 hover:bg-white/10">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+        <span class="hidden sm:inline">Export</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Table Core View (Card mobile / Grid desktop) -->
+  <div class="table-panel">
+    <table class="modern-table w-full">
+      <thead>
+        <tr>
+          <th class="w-16"><input type="checkbox" class="ui-checkbox" [checked]="allSelected" (change)="toggleAll()"></th>
+          <th>Institution Name</th>
+          <th>ID Number</th>
+          <th>Location</th>
+          <th>Subscriptions</th>
+          <th>Current Status</th>
+          <th class="text-right pr-6">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let inst of institutions" [class.is-selected]="inst.selected">
+          <td data-label="Select" class="w-16">
+            <input type="checkbox" class="ui-checkbox" [checked]="inst.selected" (change)="toggleSelection(inst)">
+          </td>
+          
+          <td data-label="Institution">
+            <div class="flex items-center gap-4">
+              <div class="avatar-circle hidden lg:flex">{{ inst.name.charAt(0) }}</div>
+              <span class="font-medium truncate max-w-[220px]">{{ inst.name }}</span>
+            </div>
+          </td>
+          
+          <td data-label="ID Number" class="font-mono text-xs opacity-60">{{ inst.noInduk }}</td>
+          <td data-label="Location" class="text-xs font-light text-dim-light">{{ inst.location }}</td>
+          
+          <td data-label="Subscriptions">
+            <div class="flex gap-1.5 flex-wrap">
+              <span *ngFor="let sub of inst.subscriptions; let last = last" class="text-xs opacity-70">
+                {{ sub.type }}<span *ngIf="!last">,</span>
+              </span>
+            </div>
+          </td>
+
+          <td data-label="Status">
+            <div class="status-indicator">
+              <span class="dot" [ngClass]="{
+                'dot-active': inst.subscriptions[0].status === 'active',
+                'dot-expiring': inst.subscriptions[0].status === 'expiring',
+                'dot-inactive': inst.subscriptions[0].status === 'inactive'
+              }"></span>
+              <span class="capitalize opacity-80">{{ inst.subscriptions[0].status }}</span>
+            </div>
+          </td>
+
+          <td data-label="Action" class="text-right">
+            <button (click)="openDetailModal(inst)" class="detail-trigger ml-auto" title="View Details">
+              <svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Empty State -->
+    <div *ngIf="institutions.length === 0" class="p-16 text-center text-gray-500 font-light italic opacity-60">
+      No institutions found matching your criteria.
+    </div>
+  </div>
+</div>
+
+<!-- Simple Modals (Optimized for all viewports) -->
+<div *ngIf="isAddModalOpen" class="modal-overlay">
+  <div class="modal-sheet">
+     <div class="modal-header">
+      <h3 class="modal-title font-semibold text-xl">New Institution</h3>
+      <button (click)="closeAddModal()" class="circle-btn bg-transparent hover:bg-white/10"><svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+    </div>
+    <div class="modal-content pb-10">
+       <div class="space-y-5">
+           <div class="flex flex-col gap-2">
+               <label class="text-[10px] uppercase font-bold text-dim tracking-widest pl-1">Institution Name</label>
+               <input type="text" class="w-full bg-white/5 border border-white/10 rounded-2xl h-12 px-5 text-sm focus:outline-none focus:border-indigo-500 transition-all" placeholder="e.g. Bank National">
+           </div>
+           <div class="flex flex-col gap-2">
+               <label class="text-[10px] uppercase font-bold text-dim tracking-widest pl-1">ID Number</label>
+               <input type="text" class="w-full bg-white/5 border border-white/10 rounded-2xl h-12 px-5 text-sm focus:outline-none focus:border-indigo-500 transition-all" placeholder="BN-001-XX">
+           </div>
+           <div class="flex flex-col gap-2">
+               <label class="text-[10px] uppercase font-bold text-dim tracking-widest pl-1">Location</label>
+               <input type="text" class="w-full bg-white/5 border border-white/10 rounded-2xl h-12 px-5 text-sm focus:outline-none focus:border-indigo-500 transition-all" placeholder="City, Country">
+           </div>
+       </div>
+
+       <div class="mt-10 flex gap-3">
+           <button (click)="closeAddModal()" class="flex-1 h-12 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/5 text-sm font-semibold transition-all">Cancel</button>
+           <button (click)="addInstitution()" class="flex-1 h-12 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold shadow-lg shadow-indigo-600/30 transition-all">Save</button>
+       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Detail Profile Modal -->
+<div *ngIf="isModalOpen && selectedInstitution" class="modal-overlay" (click)="closeModal()">
+  <div class="modal-sheet" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3 class="modal-title font-semibold text-xl">Institution Profile</h3>
+      <div class="flex gap-2">
+          <button (click)="closeModal()" class="circle-btn bg-transparent"><svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+      </div>
+    </div>
+    <div class="modal-content pb-10">
+      <!-- Profile Header -->
+      <div class="flex items-center gap-6 mb-8 mt-2">
+        <div class="w-16 h-16 rounded-3xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-3xl font-bold font-['Outfit'] border-2 border-indigo-500/30 shadow-lg">{{ selectedInstitution.name.charAt(0) }}</div>
+        <div class="flex-1 min-w-0">
+           <h4 class="text-2xl font-bold truncate leading-tight">{{ selectedInstitution.name }}</h4>
+           <p class="text-[10px] uppercase font-bold tracking-[0.2em] opacity-40 mt-1">{{ selectedInstitution.noInduk }}</p>
+        </div>
+      </div>
+
+      <div class="space-y-5">
+        <div class="p-6 rounded-3xl bg-white/[0.03] border border-white/5 shadow-sm group hover:border-white/10 transition-all">
+          <label class="text-[9px] uppercase tracking-widest text-dim font-bold block mb-3">Office Location</label>
+          <div class="flex items-center gap-3">
+              <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+              <p class="text-sm font-medium">{{ selectedInstitution.location }}</p>
+          </div>
+        </div>
+
+        <div class="p-6 rounded-3xl bg-white/[0.03] border border-white/5">
+             <label class="text-[9px] uppercase tracking-widest text-dim font-bold block mb-4">Core Subscriptions</label>
+             <div class="grid grid-cols-1 gap-2">
+                 <div *ngFor="let sub of selectedInstitution.subscriptions" class="flex justify-between items-center bg-indigo-500/5 p-4 rounded-2xl border border-indigo-500/10">
+                    <div>
+                        <span class="text-xs font-bold text-indigo-300">{{ sub.type }}</span>
+                        <p class="text-[8px] opacity-30 uppercase mt-0.5">Premium License</p>
+                    </div>
+                    <span class="text-xs font-mono opacity-50">{{ sub.validUntil | date:'MMM dd, yyy' }}</span>
+                 </div>
+             </div>
+        </div>
+      </div>
+
+      <button (click)="closeModal()" class="w-full mt-10 h-12 rounded-2xl bg-white/5 hover:bg-white/10 text-white font-bold transition-all border border-white/5">Dismiss</button>
+    </div>
+  </div>
+</div>

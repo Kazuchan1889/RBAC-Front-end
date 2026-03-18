@@ -1,0 +1,155 @@
+<!-- Loading Skeleton -->
+<div class="skeleton-grid" *ngIf="isLoading()">
+  <div class="skeleton-card" *ngFor="let i of [1,2,3,4,5]"></div>
+</div>
+
+<!-- ── STAT CARDS ── -->
+<section class="stats-section" *ngIf="!isLoading()" aria-label="Key statistics">
+  <div
+    class="stat-card"
+    *ngFor="let card of statCards; trackBy: trackById"
+    [id]="'stat-' + card.id"
+  >
+    <!-- Gradient background layer -->
+    <div class="stat-card-bg" [style.background]="card.gradient"></div>
+
+    <!-- Card Content -->
+    <div class="stat-card-content">
+      <div class="stat-icon" [innerHTML]="card.icon"></div>
+      <div class="stat-body">
+        <div class="stat-value">{{ card.value | number }}</div>
+        <div class="stat-label">{{ card.label }}</div>
+      </div>
+    </div>
+
+    <!-- Change indicator -->
+    <div class="stat-change" [class.stat-change--up]="card.change > 0" [class.stat-change--down]="card.change < 0">
+      <svg *ngIf="card.change > 0"  width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="18 15 12 9 6 15"/></svg>
+      <svg *ngIf="card.change < 0"  width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
+      <span>{{ card.change > 0 ? '+' : '' }}{{ card.change }}% {{ card.changeLabel }}</span>
+    </div>
+
+    <!-- Decorative blob -->
+    <div class="stat-blob" aria-hidden="true"></div>
+  </div>
+</section>
+
+<!-- ── MAIN GRID ── -->
+<div class="main-grid" *ngIf="!isLoading()">
+
+  <!-- ── Left column ── -->
+  <div class="grid-left">
+
+    <!-- Quick Stats Row -->
+    <section class="quick-stats-row" aria-label="Quick statistics">
+      <div class="quick-stat" *ngFor="let qs of quickStats" [id]="'qs-' + qs.label">
+        <div class="quick-stat-dot" [style.background]="qs.color" [style.box-shadow]="'0 0 8px ' + qs.color + '80'"></div>
+        <div>
+          <div class="quick-stat-value">{{ qs.value }}</div>
+          <div class="quick-stat-label">{{ qs.label }}</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Role Distribution -->
+    <section class="card-panel" aria-label="Role distribution">
+      <div class="panel-header">
+        <h2 class="panel-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+          </svg>
+          Role Distribution
+        </h2>
+        <a href="#" class="panel-link" id="view-all-roles">View all →</a>
+      </div>
+      <div class="role-list">
+        <div class="role-row" *ngFor="let r of roleDistribution">
+          <div class="role-name">
+            <span class="role-dot" [style.background]="r.color"></span>
+            {{ r.name }}
+          </div>
+          <div class="role-bar-wrap">
+            <div class="role-bar" [style.width.%]="r.percent" [style.background]="r.color"></div>
+          </div>
+          <div class="role-count">{{ r.count }}</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Top Applications -->
+    <section class="card-panel" aria-label="Top applications">
+      <div class="panel-header">
+        <h2 class="panel-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+          Top Applications
+        </h2>
+        <a href="#" class="panel-link" id="view-all-apps">View all →</a>
+      </div>
+      <div class="app-list">
+        <div class="app-row" *ngFor="let app of topApplications; let i = index" [id]="'app-row-' + i">
+          <div class="app-rank">#{{ i + 1 }}</div>
+          <div class="app-info">
+            <div class="app-name">{{ app.name }}</div>
+            <div class="app-users">{{ app.users }} users</div>
+          </div>
+          <div class="app-status" [class.app-status--active]="app.status === 'active'" [class.app-status--maintenance]="app.status === 'maintenance'">
+            {{ app.status }}
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ── Right column: Recent Activity ── -->
+  <div class="grid-right">
+    <section class="card-panel activity-panel" aria-label="Recent activity">
+      <div class="panel-header">
+        <h2 class="panel-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+          Recent Activity
+        </h2>
+        <a href="#" class="panel-link" id="view-all-activity">View all →</a>
+      </div>
+
+      <div class="activity-list">
+        <div class="activity-item" *ngFor="let act of recentActivity; trackBy: trackById" [id]="'activity-' + act.id">
+          <div class="activity-dot-wrap">
+            <div class="activity-dot" [style.background]="getActivityColor(act.type)"></div>
+            <div class="activity-line"></div>
+          </div>
+          <div class="activity-body">
+            <p class="activity-action">{{ act.action }}</p>
+            <p class="activity-meta">
+              <span class="activity-user">{{ act.user }}</span>
+              &nbsp;·&nbsp;
+              <span class="activity-time">{{ act.time }}</span>
+            </p>
+          </div>
+          <span class="activity-icon">{{ getActivityIcon(act.type) }}</span>
+        </div>
+      </div>
+
+      <!-- Summary numbers -->
+      <div class="activity-summary">
+        <div class="act-sum">
+          <span class="act-sum-val">24</span>
+          <span class="act-sum-label">Today</span>
+        </div>
+        <div class="act-sum">
+          <span class="act-sum-val">163</span>
+          <span class="act-sum-label">This Week</span>
+        </div>
+        <div class="act-sum">
+          <span class="act-sum-val">1,024</span>
+          <span class="act-sum-label">This Month</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+</div>
