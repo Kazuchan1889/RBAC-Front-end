@@ -1,5 +1,5 @@
 {
-    "buildCommand": "npm install -g @angular/cli && ng build --output-path=vercel/output",
+    "buildCommand": "npm run build && cp -r dist/rbac-frontend/browser/* vercel/output/ 2>/dev/null || cp -r dist/rbac-frontend/* vercel/output/",
     "rewrites": [
         {
             "source": "/(.*)",
