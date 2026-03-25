@@ -1,0 +1,4 @@
+{
+    "buildCommand": "npm install -g @angular/cli && npm run build",
+    "outputDirectory": "dist/rbac-frontend"
+}
