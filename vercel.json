@@ -1,10 +1,11 @@
 {
     "buildCommand": "npm install -g @angular/cli && npm run build",
     "outputDirectory": "dist/rbac-frontend",
-    "routes": [
+    "framework": null,
+    "rewrites": [
         {
-            "src": "/(.*)",
-            "dest": "/index.html"
+            "source": "/(.*)",
+            "destination": "/index.html"
         }
     ]
 }
