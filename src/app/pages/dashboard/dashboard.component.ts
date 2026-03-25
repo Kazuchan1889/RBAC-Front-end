@@ -1,13 +1,14 @@
 import { Component, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 interface StatCard {
   id: string;
   label: string;
   value: number;
-  icon: string;
+  icon: SafeHtml; // changed to SafeHtml
   gradient: string;
-  change: number;        // percent change (positive = up)
+  change: number;        
   changeLabel: string;
 }
 
@@ -35,69 +36,71 @@ interface QuickStat {
 export class DashboardComponent implements OnInit {
 
   isLoading = signal(true);
+  statCards: StatCard[] = [];
 
-  // ── Stat Cards ──────────────────────────────────────
-  statCards: StatCard[] = [
-    {
-      id: 'users',
-      label: 'Total Users',
-      value: 248,
-      icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-        <circle cx="9" cy="7" r="4"/>
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
-      </svg>`,
-      gradient: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%)',
-      change: 12,
-      changeLabel: 'vs last month'
-    },
-    {
-      id: 'roles',
-      label: 'Total Roles',
-      value: 14,
-      icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-      </svg>`,
-      gradient: 'linear-gradient(135deg, #06b6d4 0%, #0891b2 50%, #0e7490 100%)',
-      change: 2,
-      changeLabel: 'new this week'
-    },
-    {
-      id: 'applications',
-      label: 'Total Applications',
-      value: 37,
-      icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-        <line x1="8" y1="21" x2="16" y2="21"/>
-        <line x1="12" y1="17" x2="12" y2="21"/>
-      </svg>`,
-      gradient: 'linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%)',
-      change: 5,
-      changeLabel: 'vs last month'
-    },
-    {
-      id: 'institutions',
-      label: 'Total Institutions',
-      value: 12,
-      icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-        <path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 10v11M12 10v11M16 10v11"/>
-      </svg>`,
-      gradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%)',
-      change: -1,
-      changeLabel: 'vs last month'
-    },
-    {
-      id: 'groups',
-      label: 'Total Groups',
-      value: 56,
-      icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-      </svg>`,
-      gradient: 'linear-gradient(135deg, #ec4899 0%, #db2777 50%, #be185d 100%)',
-      change: 8,
-      changeLabel: 'vs last month'
-    }
-  ];
+  constructor(private sanitizer: DomSanitizer) {
+    this.statCards = [
+      {
+        id: 'users',
+        label: 'Total Users',
+        value: 248,
+        icon: this.sanitizer.bypassSecurityTrustHtml(`<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>`),
+        gradient: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%)',
+        change: 12,
+        changeLabel: 'vs last month'
+      },
+      {
+        id: 'roles',
+        label: 'Total Roles',
+        value: 14,
+        icon: this.sanitizer.bypassSecurityTrustHtml(`<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>`),
+        gradient: 'linear-gradient(135deg, #06b6d4 0%, #0891b2 50%, #0e7490 100%)',
+        change: 2,
+        changeLabel: 'new this week'
+      },
+      {
+        id: 'applications',
+        label: 'Total Applications',
+        value: 37,
+        icon: this.sanitizer.bypassSecurityTrustHtml(`<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+          <line x1="8" y1="21" x2="16" y2="21"/>
+          <line x1="12" y1="17" x2="12" y2="21"/>
+        </svg>`),
+        gradient: 'linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%)',
+        change: 5,
+        changeLabel: 'vs last month'
+      },
+      {
+        id: 'institutions',
+        label: 'Total Institutions',
+        value: 12,
+        icon: this.sanitizer.bypassSecurityTrustHtml(`<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 10v11M12 10v11M16 10v11"/>
+        </svg>`),
+        gradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%)',
+        change: -1,
+        changeLabel: 'vs last month'
+      },
+      {
+        id: 'groups',
+        label: 'Total Groups',
+        value: 56,
+        icon: this.sanitizer.bypassSecurityTrustHtml(`<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>`),
+        gradient: 'linear-gradient(135deg, #ec4899 0%, #db2777 50%, #be185d 100%)',
+        change: 8,
+        changeLabel: 'vs last month'
+      }
+    ];
+  }
 
   // ── Quick Stats ─────────────────────────────────────
   quickStats: QuickStat[] = [

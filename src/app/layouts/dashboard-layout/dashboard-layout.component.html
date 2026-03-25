@@ -57,14 +57,16 @@
                 </div>
               </a>
             </div>
-            <div class="dropdown-footer">View all notifications</div>
+            <a routerLink="/dashboard/notifications" class="dropdown-footer block" (click)="showNotifications.set(false)">View all notifications</a>
           </div>
         </div>
 
         <!-- User Avatar & Dropdown -->
         <div class="topbar-action-wrapper">
           <div class="topbar-user" id="topbar-user" (click)="toggleProfileMenu($event)">
-            <div class="topbar-avatar">A</div>
+            <!-- Show photo if stored, otherwise initials -->
+            <div class="topbar-avatar" *ngIf="!avatarService.avatarUrl()">A</div>
+            <img *ngIf="avatarService.avatarUrl()" [src]="avatarService.avatarUrl()" class="topbar-avatar topbar-avatar-img" alt="Profile">
             <div class="topbar-user-info">
               <span class="topbar-name">Admin RBAC</span>
               <span class="topbar-role">Super Administrator</span>
@@ -80,13 +82,6 @@
               <div class="dropdown-text">
                 <p class="dropdown-title">Profile Settings</p>
                 <p class="dropdown-time">Edit personal details</p>
-              </div>
-            </a>
-            <a routerLink="/dashboard/settings" class="dropdown-item">
-              <span class="dropdown-icon">⚙️</span>
-              <div class="dropdown-text">
-                <p class="dropdown-title">System Settings</p>
-                <p class="dropdown-time">Manage RBAC config</p>
               </div>
             </a>
             <div class="dropdown-divider"></div>

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { filter } from 'rxjs/operators';
+import { UserAvatarService } from '../../services/user-avatar.service';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -22,7 +23,10 @@ export class DashboardLayoutComponent implements OnInit {
   showProfileMenu = signal(false);
   mobileMenuOpen = false;
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    public avatarService: UserAvatarService
+  ) {
     // Update title dynamically based on route
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)

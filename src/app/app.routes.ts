@@ -27,14 +27,34 @@ export const routes: Routes = [
           import('./pages/users/users.component').then((m) => m.UsersComponent)
       },
       {
+        path: 'applications',
+        loadComponent: () =>
+          import('./pages/applications/applications.component').then((m) => m.ApplicationsComponent)
+      },
+      {
         path: 'roles',
         loadComponent: () =>
           import('./pages/roles/roles.component').then((m) => m.RolesComponent)
       },
       {
+        path: 'notifications',
+        loadComponent: () =>
+          import('./pages/notifications/notifications.component').then((m) => m.NotificationsComponent)
+      },
+      {
         path: 'institution',
         loadComponent: () =>
           import('./pages/institution/institution.component').then((m) => m.InstitutionComponent)
+      },
+      {
+        path: 'profile-settings',
+        loadComponent: () =>
+          import('./pages/profile/profile.component').then((m) => m.ProfileComponent)
+      },
+      {
+        path: 'audit',
+        loadComponent: () =>
+          import('./pages/audit/audit.component').then((m) => m.AuditComponent)
       },
       {
         path: ':feature',

@@ -1,0 +1,235 @@
+<div class="main-container">
+
+  <!-- Header -->
+  <header class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+    <div>
+      <h1 class="page-title text-4xl mb-2">Audit Log</h1>
+      <p class="text-dim text-sm font-light">Full traceability of every system event, action, and access anomaly.</p>
+    </div>
+    <div class="flex gap-3 flex-wrap">
+      <!-- Module Filter -->
+      <div class="relative group">
+        <button class="filter-btn">
+          <svg class="w-4 h-4 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"/></svg>
+          Module: <span class="text-indigo-400 truncate max-w-[80px]">{{selectedModule === 'all' ? 'All' : selectedModule}}</span>
+        </button>
+        <div class="dropdown-panel">
+          <button (click)="filterByModule('all')" class="dropdown-item">All Modules</button>
+          <button *ngFor="let mod of modules" (click)="filterByModule(mod)" class="dropdown-item">{{mod}}</button>
+        </div>
+      </div>
+      <!-- Status Filter -->
+      <div class="relative group">
+        <button class="filter-btn">
+          <svg class="w-4 h-4 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h18M7 8h10M11 12h4"/></svg>
+          Status: <span class="capitalize" [ngClass]="{'text-emerald-400': selectedStatus==='success', 'text-rose-400': selectedStatus==='failed', 'text-amber-400': selectedStatus==='warning', 'text-indigo-400': selectedStatus==='all'}">{{selectedStatus}}</span>
+        </button>
+        <div class="dropdown-panel">
+          <button (click)="filterByStatus('all')" class="dropdown-item">All Status</button>
+          <button (click)="filterByStatus('success')" class="dropdown-item text-emerald-400">Success</button>
+          <button (click)="filterByStatus('failed')" class="dropdown-item text-rose-400">Failed</button>
+          <button (click)="filterByStatus('warning')" class="dropdown-item text-amber-400">Warning</button>
+        </div>
+      </div>
+      <button class="add-btn">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+        Export CSV
+      </button>
+    </div>
+  </header>
+
+  <!-- Stat Cards -->
+  <section class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
+    <div class="stat-card border-indigo-500/15 bg-indigo-500/5">
+      <p class="stat-label text-indigo-400">Total Events</p>
+      <h3 class="stat-value">{{allLogs.length}}</h3>
+      <p class="stat-sub text-indigo-400/60">All recorded</p>
+    </div>
+    <div class="stat-card border-emerald-500/15 bg-emerald-500/5">
+      <p class="stat-label text-emerald-400">Successful</p>
+      <h3 class="stat-value text-emerald-400">{{countByStatus('success')}}</h3>
+      <p class="stat-sub text-emerald-500/60">Clean activity</p>
+    </div>
+    <div class="stat-card border-rose-500/15 bg-rose-500/5">
+      <p class="stat-label text-rose-400">Anomalies</p>
+      <h3 class="stat-value text-rose-400">{{countByStatus('failed') + countByStatus('warning')}}</h3>
+      <p class="stat-sub text-rose-500/60">Failed + Warnings</p>
+    </div>
+  </section>
+
+  <!-- Table Workspace -->
+  <div class="table-workspace">
+    <!-- Search Bar -->
+    <div class="toolbar-top">
+      <div class="search-wrapper">
+        <svg class="w-4 h-4 absolute left-5 top-4 text-dim" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input type="text" [(ngModel)]="searchQuery" (input)="onSearch()" class="search-input" placeholder="Search by action, actor, module, or target...">
+      </div>
+      <span class="text-[11px] text-dim opacity-40 font-bold uppercase tracking-widest">{{filteredLogs.length}} events</span>
+    </div>
+
+    <!-- Log Table -->
+    <div class="overflow-x-auto flex-1">
+      <table class="data-table w-full">
+        <thead>
+          <tr class="hidden md:table-row">
+            <th class="w-16 pl-8"><input type="checkbox" class="ui-checkbox" [checked]="allSelected" (change)="toggleAll()"></th>
+            <th>Event / Action</th>
+            <th>Module</th>
+            <th>Actor</th>
+            <th>Target</th>
+            <th>IP Address</th>
+            <th>Time</th>
+            <th>Status</th>
+            <th class="text-right pr-10">Detail</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let log of paginatedLogs" [class.row-selected]="log.selected">
+            <td data-label="Check" class="w-16 md:pl-8">
+              <input type="checkbox" class="ui-checkbox" [checked]="log.selected" (change)="toggleSelection(log)">
+            </td>
+            <td data-label="Event">
+              <div class="flex items-center gap-3">
+                <div class="event-icon" [ngClass]="log.status">
+                  <svg *ngIf="log.status === 'success'" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                  <svg *ngIf="log.status === 'failed'" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                  <svg *ngIf="log.status === 'warning'" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+                </div>
+                <span class="font-bold text-sm">{{log.action}}</span>
+              </div>
+            </td>
+            <td data-label="Module"><span class="category-badge">{{log.module}}</span></td>
+            <td data-label="Actor">
+              <div>
+                <p class="text-sm font-semibold truncate max-w-[120px]">{{log.actor}}</p>
+                <p class="text-[10px] text-dim">{{log.actorRole}}</p>
+              </div>
+            </td>
+            <td data-label="Target" class="text-xs text-dim max-w-[140px] truncate">{{log.target}}</td>
+            <td data-label="IP" class="font-mono text-[11px] text-dim">{{log.ipAddress}}</td>
+            <td data-label="Time" class="font-mono text-[11px] text-dim">{{log.timestamp}}</td>
+            <td data-label="Status">
+              <div class="status-badge" [ngClass]="log.status">
+                <span class="dot"></span>
+                <span class="capitalize font-bold text-[11px]">{{log.status}}</span>
+              </div>
+            </td>
+            <td data-label="Detail" class="text-right pr-8">
+              <button (click)="openDetail(log)" class="detail-btn" title="View Detail">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Empty State -->
+      <div *ngIf="paginatedLogs.length === 0" class="flex flex-col items-center justify-center py-24 text-center">
+        <div class="w-16 h-16 rounded-3xl bg-white/5 flex items-center justify-center mb-5">
+          <svg class="w-8 h-8 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2"/></svg>
+        </div>
+        <h4 class="text-lg font-bold opacity-30">No audit events found</h4>
+        <p class="text-sm text-dim opacity-40 mt-1">Try adjusting filters or search query.</p>
+        <button (click)="searchQuery=''; selectedStatus='all'; selectedModule='all'; applyFilters()" class="mt-5 text-indigo-400 text-xs font-bold uppercase tracking-widest hover:text-indigo-300">Clear all filters</button>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div *ngIf="paginatedLogs.length > 0" class="pagination-footer">
+      <span class="text-xs text-dim opacity-40">Showing {{getStartIndex()}}–{{getEndIndex()}} of {{filteredLogs.length}} events</span>
+      <div class="flex gap-2">
+        <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1" class="page-btn disabled:opacity-20 disabled:cursor-not-allowed">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button *ngFor="let p of pages" (click)="goToPage(p)" [ngClass]="p === currentPage ? 'page-btn-active' : 'page-btn'">{{p}}</button>
+        <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages" class="page-btn disabled:opacity-20 disabled:cursor-not-allowed">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Audit Detail Modal -->
+<div *ngIf="isDetailOpen && selectedLog" class="modal-overlay" (click)="closeDetail()">
+  <div class="modal-sheet max-w-[560px]" (click)="$event.stopPropagation()">
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <div class="flex items-center gap-4">
+        <div class="event-icon-lg" [ngClass]="selectedLog.status">
+          <svg *ngIf="selectedLog.status === 'success'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+          <svg *ngIf="selectedLog.status === 'failed'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+          <svg *ngIf="selectedLog.status === 'warning'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01"/></svg>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold">{{selectedLog.action}}</h3>
+          <p class="text-[10px] uppercase font-bold text-dim tracking-widest mt-0.5">{{selectedLog.id}} · Audit Detail</p>
+        </div>
+      </div>
+      <button (click)="closeDetail()" class="icon-round-btn">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="modal-content pb-12">
+      <!-- Status badge -->
+      <div class="mb-6">
+        <div class="status-badge inline-flex" [ngClass]="selectedLog.status">
+          <span class="dot"></span>
+          <span class="capitalize font-bold text-[11px]">{{selectedLog.status}}</span>
+        </div>
+      </div>
+
+      <!-- Core Info Grid -->
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="detail-row">
+          <label class="detail-label">Module</label>
+          <span class="category-badge mt-1 inline-block">{{selectedLog.module}}</span>
+        </div>
+        <div class="detail-row">
+          <label class="detail-label">Target</label>
+          <p class="text-sm font-semibold mt-1">{{selectedLog.target}}</p>
+        </div>
+        <div class="detail-row">
+          <label class="detail-label">Actor</label>
+          <p class="text-sm font-semibold mt-1">{{selectedLog.actor}}</p>
+          <p class="text-[10px] text-dim">{{selectedLog.actorRole}}</p>
+        </div>
+        <div class="detail-row">
+          <label class="detail-label">IP Address</label>
+          <p class="text-sm font-mono mt-1">{{selectedLog.ipAddress}}</p>
+        </div>
+        <div class="detail-row col-span-2">
+          <label class="detail-label">Timestamp</label>
+          <p class="text-sm font-mono mt-1">{{selectedLog.timestamp}}</p>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="p-5 rounded-2xl bg-white/[0.02] border border-white/5 mb-6">
+        <label class="detail-label block mb-2">Event Description</label>
+        <p class="text-sm font-light leading-relaxed">{{selectedLog.detail}}</p>
+      </div>
+
+      <!-- Field Changes Diff (only if has changes) -->
+      <div *ngIf="selectedLog.changes && selectedLog.changes.length > 0">
+        <label class="detail-label block mb-3">Field-Level Changes</label>
+        <div class="space-y-3">
+          <div *ngFor="let c of selectedLog.changes" class="p-4 rounded-2xl bg-white/[0.02] border border-white/5">
+            <p class="text-[10px] uppercase font-bold text-dim tracking-widest mb-2">{{c.field}}</p>
+            <div class="flex items-center gap-3">
+              <span class="diff-before">{{c.before}}</span>
+              <svg class="w-4 h-4 text-dim shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+              <span class="diff-after">{{c.after}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-10">
+        <button (click)="closeDetail()" class="w-full h-12 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm shadow-lg shadow-indigo-600/20 transition-all">Close Detail</button>
+      </div>
+    </div>
+  </div>
+</div>

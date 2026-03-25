@@ -232,6 +232,13 @@
   font-size: 0.8rem;
   font-weight: 700;
   color: #fff;
+  flex-shrink: 0;
+}
+.topbar-avatar-img {
+  width: 32px; height: 32px;
+  border-radius: 50%; object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid rgba(99,102,241,0.4);
 }
 .topbar-user-info {
   display: flex;
