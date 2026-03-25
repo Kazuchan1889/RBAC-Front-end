@@ -1,11 +1,20 @@
 {
-    "buildCommand": "npm install -g @angular/cli && npm run build",
-    "outputDirectory": "dist/rbac-frontend",
-    "framework": null,
-    "rewrites": [
+    "builds": [
         {
-            "source": "/(.*)",
-            "destination": "/index.html"
+            "src": "package.json",
+            "use": "@vercel/static-build",
+            "config": {
+                "distDir": "dist/rbac-frontend"
+            }
+        }
+    ],
+    "routes": [
+        {
+            "handle": "filesystem"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/index.html"
         }
     ]
 }
