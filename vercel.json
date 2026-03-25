@@ -1,5 +1,6 @@
 {
-    "buildCommand": "npm install -g @angular/cli && ng build --output-path=temp-dist && mkdir -p vercel/output && cp -r temp-dist/browser/* vercel/output/ && rm -rf temp-dist",
+    "buildCommand": "npm install -g @angular/cli && ng build",
+    "outputDirectory": "dist/rbac-frontend/browser",
     "rewrites": [
         {
             "source": "/(.*)",
