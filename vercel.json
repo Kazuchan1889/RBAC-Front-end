@@ -1,6 +1,5 @@
 {
-    "buildCommand": "npm install -g @angular/cli && npm run build",
-    "outputDirectory": "dist/rbac-frontend",
+    "buildCommand": "npm install -g @angular/cli && ng build --output-path=vercel/output",
     "rewrites": [
         {
             "source": "/(.*)",
