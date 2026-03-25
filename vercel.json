@@ -1,5 +1,5 @@
 {
-    "buildCommand": "npm run build && cp -r dist/rbac-frontend/browser/* vercel/output/ 2>/dev/null || cp -r dist/rbac-frontend/* vercel/output/",
+    "buildCommand": "mkdir -p vercel/output && npx @angular/cli build && cp -rv dist/rbac-frontend/browser/* vercel/output/",
     "rewrites": [
         {
             "source": "/(.*)",
