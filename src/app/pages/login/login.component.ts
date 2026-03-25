@@ -110,6 +110,15 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
     this.isLoading.set(false);
   }
 
+  async onSSOLogin(provider: string): Promise<void> {
+    this.isLoading.set(true);
+    await this.delay(800); // Simulate SSO redirect/auth delay
+    this.loginSuccess.set(true);
+    await this.delay(1000);
+    this.router.navigate(['/dashboard']);
+    this.isLoading.set(false);
+  }
+
   private delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
