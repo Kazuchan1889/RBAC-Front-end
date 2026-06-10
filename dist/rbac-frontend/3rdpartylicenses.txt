@@ -10,7 +10,7 @@ License: "MIT"
 
 
 --------------------------------------------------------------------------------
-Package: @angular/forms
+Package: @angular/router
 License: "MIT"
 
 
@@ -20,7 +20,7 @@ License: "MIT"
 
 
 --------------------------------------------------------------------------------
-Package: @angular/router
+Package: @angular/forms
 License: "MIT"
 
 
