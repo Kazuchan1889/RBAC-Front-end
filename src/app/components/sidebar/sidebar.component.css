@@ -82,8 +82,8 @@
   right: -14px;
   top: 50%;
   transform: translateY(-50%);
-  background: var(--bg-dark, #07070f);
-  border: 1px solid rgba(73, 103, 208,0.3);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-normal);
   border-radius: 50%;
   width: 28px;
   height: 28px;
@@ -91,14 +91,14 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #fff;
+  color: var(--text-primary);
   z-index: 50;
-  box-shadow: 0 0 10px rgba(73, 103, 208,0.2);
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
   transition: background 0.2s, color 0.2s, transform 0.2s;
 }
 .collapse-btn:hover {
-  background: rgba(73, 103, 208,0.2);
-  color: #a5b4fc;
+  background: var(--bg-card-hover);
+  color: var(--clr-primary);
   transform: translateY(-50%) scale(1.1);
 }
 
