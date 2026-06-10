@@ -52,14 +52,14 @@
 :host-context(html.light-mode) .notif-card.bg-indigo-500\/10 {
   background: #eef2ff !important;
   border-color: #c7d2fe !important;
-  box-shadow: 0 4px 12px rgba(99,102,241,0.1) !important;
+  box-shadow: 0 4px 12px rgba(73, 103, 208,0.1) !important;
 }
 
 :host-context(html.light-mode) .text-white { color: var(--text-primary) !important; }
 :host-context(html.light-mode) .text-dim { color: var(--text-secondary) !important; }
 :host-context(html.light-mode) .text-indigo-100 { color: #312e81 !important; }
 :host-context(html.light-mode) .text-indigo-100\/80 { color: #4338ca !important; }
-:host-context(html.light-mode) .text-indigo-400 { color: #4f46e5 !important; }
+:host-context(html.light-mode) .text-indigo-400 { color: #3751a9 !important; }
 
 :host-context(html.light-mode) .bg-white\/5 { 
   background: #ffffff !important; 

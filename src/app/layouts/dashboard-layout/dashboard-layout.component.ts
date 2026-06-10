@@ -4,6 +4,7 @@ import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { filter } from 'rxjs/operators';
 import { UserAvatarService } from '../../services/user-avatar.service';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -25,7 +26,8 @@ export class DashboardLayoutComponent implements OnInit {
 
   constructor(
     private router: Router,
-    public avatarService: UserAvatarService
+    public avatarService: UserAvatarService,
+    public themeService: ThemeService
   ) {
     // Update title dynamically based on route
     this.router.events.pipe(

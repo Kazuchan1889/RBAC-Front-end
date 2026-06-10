@@ -1,7 +1,7 @@
 /* Layout & Design Tokens */
 :host {
-  --accent: #6366f1;
-  --accent-hover: #4f46e5;
+  --accent: #4967D0;
+  --accent-hover: #3751a9;
   --bg-darker: #07070f;
   --bg-panel: #0e0e1a;
   --text-dim: #9898b5;
@@ -37,7 +37,7 @@
 
 .metric-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
+  box-shadow: 0 20px 40px rgba(73, 103, 208, 0.15);
 }
 
 /* Table Workspace Styling */
@@ -88,7 +88,7 @@
 
 /* Avatar Wrap with Shadow */
 .user-avatar-wrap {
-  filter: drop-shadow(0 4px 12px rgba(99, 102, 241, 0.2));
+  filter: drop-shadow(0 4px 12px rgba(73, 103, 208, 0.2));
 }
 
 /* Status Badge Refining */

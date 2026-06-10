@@ -1,7 +1,7 @@
 /* Layout & Design Tokens */
 :host {
-  --accent: #6366f1;
-  --accent-hover: #4f46e5;
+  --accent: #4967D0;
+  --accent-hover: #3751a9;
   --bg-darker: #07070f;
   --bg-panel: #0e0e1a;
   --text-dim: #9898b5;
@@ -93,7 +93,7 @@
   background: var(--accent); 
   color: #fff; 
   z-index: 2;
-  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 8px 24px rgba(73, 103, 208, 0.3);
 }
 .seg-expiring {
   background: repeating-linear-gradient(45deg, rgba(255,255,255,0.03), rgba(255,255,255,0.03) 6px, rgba(255,255,255,0.06) 6px, rgba(255,255,255,0.06) 12px);
@@ -203,7 +203,7 @@
   transition: all 0.2s;
 }
 
-.primary-circle { background: var(--accent); box-shadow: 0 8px 16px rgba(99, 102, 241, 0.2); color: #fff; }
+.primary-circle { background: var(--accent); box-shadow: 0 8px 16px rgba(73, 103, 208, 0.2); color: #fff; }
 
 /* Table Container (The white card equivalent in reference) */
 .table-panel {
@@ -266,7 +266,7 @@
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
+  background: linear-gradient(135deg, #818cf8 0%, #4967D0 100%);
   display: flex;
   align-items: center;
   justify-content: center;

@@ -14,10 +14,13 @@ export class ThemeService {
   }
 
   toggle() {
-    const next = !this.isDark();
-    this.isDark.set(next);
-    this.applyTheme(next);
-    localStorage.setItem(STORAGE_KEY, next ? 'dark' : 'light');
+    this.setTheme(!this.isDark());
+  }
+
+  setTheme(dark: boolean) {
+    this.isDark.set(dark);
+    this.applyTheme(dark);
+    localStorage.setItem(STORAGE_KEY, dark ? 'dark' : 'light');
   }
 
   private applyTheme(dark: boolean) {

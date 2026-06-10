@@ -15,6 +15,7 @@ import {
   AbstractControl
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-login',
@@ -38,11 +39,14 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
   private animationFrameId: number = 0;
   private particles: Particle[] = [];
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private fb: FormBuilder, private router: Router, private themeService: ThemeService) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
+    
+    // Set default theme to day mode for login page
+    this.themeService.setTheme(false);
   }
 
   ngAfterViewInit(): void {
