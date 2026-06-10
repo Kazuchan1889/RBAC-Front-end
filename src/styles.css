@@ -41,11 +41,11 @@
   --text-placeholder: #4e4e63;
 
   /* Borders */
-  --border-subtle: rgba(255, 255, 255, 0.07);
-  --border-normal: rgba(255, 255, 255, 0.11);
-  --border-focus: rgba(99, 102, 241, 0.65);
+  --border-subtle: rgba(255, 255, 255, 0.12);
+  --border-normal: rgba(255, 255, 255, 0.20);
+  --border-focus: rgba(73, 103, 208, 0.65);
   --border-error: rgba(239, 68, 68, 0.7);
-  --border-glass: rgba(255, 255, 255, 0.1);
+  --border-glass: rgba(255, 255, 255, 0.15);
 
   /* Gradients */
   --grad-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
@@ -128,10 +128,10 @@ html.light-mode {
   --text-muted: #6b7280;
   --text-placeholder: #9ca3af;
 
-  --border-subtle: #B5C2EE;
-  --border-normal: #B5C2EE;
+  --border-subtle: #94A3B8;
+  --border-normal: #64748B;
   --border-focus: #4967D0;
-  --border-glass: #B5C2EE;
+  --border-glass: #94A3B8;
   
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);

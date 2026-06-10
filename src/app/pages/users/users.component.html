@@ -55,6 +55,7 @@
                      <th>User Profile</th>
                      <th>Primary Role</th>
                      <th>Sub. Institution</th>
+                     <th>Assigned Group</th>
                      <th>Account Status</th>
                      <th>Last Activity</th>
                      <th class="text-right pr-12">Actions</th>
@@ -88,6 +89,10 @@
                              <span class="text-xs font-medium">{{ user.institution }}</span>
                              <span class="text-[9px] uppercase font-bold opacity-30 mt-0.5">Corporate Sub</span>
                          </div>
+                     </td>
+
+                     <td data-label="Group">
+                         <span class="text-[10px] font-bold tracking-wide px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-indigo-300">{{ user.group }}</span>
                      </td>
 
                      <td data-label="Status">
@@ -177,6 +182,15 @@
                 <input type="text" [(ngModel)]="userForm.institution" name="institution" class="h-12 bg-white/5 border border-white/10 rounded-2xl px-5 text-sm outline-none focus:border-indigo-500 transition-all" placeholder="e.g. Bank Rakyat Indonesia">
             </div>
             <div class="form-group flex flex-col gap-2">
+                <label class="text-[11px] uppercase font-bold tracking-[0.1em] text-dim pl-1">Assign Group</label>
+                <select [(ngModel)]="userForm.group" name="group" class="h-12 bg-white/5 border border-white/10 rounded-2xl px-5 text-sm outline-none focus:border-indigo-500 transition-all appearance-none cursor-pointer">
+                    <option value="IT Support">IT Support</option>
+                    <option value="Finance Ops">Finance Ops</option>
+                    <option value="HR Division">HR Division</option>
+                    <option value="Marketing Team">Marketing Team</option>
+                </select>
+            </div>
+            <div class="form-group flex flex-col gap-2">
                 <label class="text-[11px] uppercase font-bold tracking-[0.1em] text-dim pl-1">Account Status</label>
                 <select [(ngModel)]="userForm.status" name="status" class="h-12 bg-white/5 border border-white/10 rounded-2xl px-5 text-sm outline-none focus:border-indigo-500 transition-all appearance-none cursor-pointer">
                     <option value="active">Active</option>
@@ -220,6 +234,13 @@
                     <p class="text-sm font-semibold">{{ selectedUser.institution }}</p>
                 </div>
                 <svg class="w-5 h-5 text-dim opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-10V4a1 1 0 011-1h2a1 1 0 011 1v3M12 15h.01M12 19h.01"></path></svg>
+            </div>
+            <div class="p-5 rounded-3xl bg-white/[0.03] border border-white/5 flex items-center justify-between">
+                <div>
+                    <label class="text-[9px] uppercase font-bold text-dim tracking-widest block mb-1">Assigned Group</label>
+                    <p class="text-sm font-semibold">{{ selectedUser.group }}</p>
+                </div>
+                <svg class="w-5 h-5 text-dim opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
             </div>
             <div class="p-5 rounded-3xl bg-white/[0.03] border border-white/5 flex items-center justify-between">
                 <div>

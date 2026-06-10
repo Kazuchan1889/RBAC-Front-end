@@ -8,6 +8,7 @@ interface User {
   email: string;
   role: string;
   institution: string;
+  group: string;
   status: 'active' | 'inactive' | 'pending';
   lastLogin: string;
   avatar?: string;
@@ -24,13 +25,13 @@ interface User {
 export class UsersComponent implements OnInit {
   // Master Data
   allUsers: User[] = [
-    { id: 'U001', name: 'Adrian Syah', email: 'adrian@bri.co.id', role: 'Super Admin', institution: 'Bank Rakyat Indonesia', status: 'active', lastLogin: '2024-03-18 09:30', avatar: 'AS' },
-    { id: 'U002', name: 'Bella Clarita', email: 'bella@bni.co.id', role: 'Institution Admin', institution: 'Bank Negara Indonesia', status: 'active', lastLogin: '2024-03-17 14:20', avatar: 'BC' },
-    { id: 'U003', name: 'Candra Wijaya', email: 'candra@mandiri.id', role: 'Operator', institution: 'Bank Mandiri', status: 'inactive', lastLogin: '2024-03-10 11:05', avatar: 'CW' },
-    { id: 'U004', name: 'Diana Putri', email: 'diana@bca.co.id', role: 'Auditor', institution: 'Bank Central Asia', status: 'pending', lastLogin: '-', avatar: 'DP' },
-    { id: 'U005', name: 'Erick Thohir', email: 'erick@btn.id', role: 'Operator', institution: 'Bank Tabungan Negara', status: 'active', lastLogin: '2024-03-18 08:15', avatar: 'ET' },
-    { id: 'U006', name: 'Farhan Hamid', email: 'farhan@bri.co.id', role: 'Operator', institution: 'Bank Rakyat Indonesia', status: 'active', lastLogin: '2024-03-18 10:00', avatar: 'FH' },
-    { id: 'U007', name: 'Gita Permata', email: 'gita@bni.co.id', role: 'Auditor', institution: 'Bank Negara Indonesia', status: 'inactive', lastLogin: '2024-03-15 16:45', avatar: 'GP' }
+    { id: 'U001', name: 'Adrian Syah', email: 'adrian@bri.co.id', role: 'Super Admin', institution: 'Bank Rakyat Indonesia', group: 'IT Support', status: 'active', lastLogin: '2024-03-18 09:30', avatar: 'AS' },
+    { id: 'U002', name: 'Bella Clarita', email: 'bella@bni.co.id', role: 'Institution Admin', institution: 'Bank Negara Indonesia', group: 'Finance Ops', status: 'active', lastLogin: '2024-03-17 14:20', avatar: 'BC' },
+    { id: 'U003', name: 'Candra Wijaya', email: 'candra@mandiri.id', role: 'Operator', institution: 'Bank Mandiri', group: 'HR Division', status: 'inactive', lastLogin: '2024-03-10 11:05', avatar: 'CW' },
+    { id: 'U004', name: 'Diana Putri', email: 'diana@bca.co.id', role: 'Auditor', institution: 'Bank Central Asia', group: 'Finance Ops', status: 'pending', lastLogin: '-', avatar: 'DP' },
+    { id: 'U005', name: 'Erick Thohir', email: 'erick@btn.id', role: 'Operator', institution: 'Bank Tabungan Negara', group: 'IT Support', status: 'active', lastLogin: '2024-03-18 08:15', avatar: 'ET' },
+    { id: 'U006', name: 'Farhan Hamid', email: 'farhan@bri.co.id', role: 'Operator', institution: 'Bank Rakyat Indonesia', group: 'Marketing Team', status: 'active', lastLogin: '2024-03-18 10:00', avatar: 'FH' },
+    { id: 'U007', name: 'Gita Permata', email: 'gita@bni.co.id', role: 'Auditor', institution: 'Bank Negara Indonesia', group: 'HR Division', status: 'inactive', lastLogin: '2024-03-15 16:45', avatar: 'GP' }
   ];
 
   filteredUsers: User[] = [];
@@ -59,6 +60,7 @@ export class UsersComponent implements OnInit {
     email: '',
     role: 'Operator',
     institution: '',
+    group: 'IT Support',
     status: 'active'
   };
 
@@ -117,7 +119,7 @@ export class UsersComponent implements OnInit {
 
   // --- Actions & CRUD ---
   openAddModal() {
-    this.userForm = { name: '', email: '', role: 'Operator', institution: '', status: 'active' };
+    this.userForm = { name: '', email: '', role: 'Operator', institution: '', group: 'IT Support', status: 'active' };
     this.isAddModalOpen = true;
   }
 
